@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block page_title %}Members{% endblock %}
+
+{% block content %}
+<div class="card-custom">
+    <div class="card-header-flex">
+        <h4 class="card-title-custom">Members List</h4>
+        <a href="/members/add" class="btn-custom-red">Add New Member</a>
+    </div>
+
+    <div class="table-responsive mt-3">
+        <table class="table table-custom">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Membership ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Membership</th>
+                    <th>Expires At</th>
+                    <th>Fines</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in members %}
+                <tr>
+                    <td class="text-muted">#M-{{ '%04d' % m.id }}</td>
+                    <td class="text-muted">{{ m.membership_id }}</td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="https://ui-avatars.com/api/?name={{ m.full_name | urlencode }}&background=2b2b36&color=fff&size=30"
+                                class="rounded-circle" width="30">
+                            {{ m.full_name }}
+                        </div>
+                    </td>
+                    <td class="text-muted">{{ m.email }}</td>
+                    <td><span class="badge-status"
+                            style="background: rgba(255,255,255,0.05); color: var(--text-muted);">{{
+                            m.membership_type.value }}</span></td>
+                    <td class="text-muted">
+                        {% if m.expires_at %}
+                        {{ m.expires_at.strftime('%d %b, %Y') }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td class="{% if m.total_unpaid_fines > 0 %}text-danger{% else %}text-white{% endif %}">
+                        ₹ {{ m.total_unpaid_fines }}
+                    </td>
+                    <td>
+                        <a href="/members/edit/{{m.id}}" style="color: var(--text-muted); margin-right: 10px;"
+                            title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="/members/delete/{{m.id}}" style="color: var(--accent-red);" title="Delete"><i
+                                class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

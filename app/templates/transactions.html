@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block page_title %}Transactions{% endblock %}
+
+{% block content %}
+<div class="card-custom">
+    <div class="card-header-flex">
+        <h4 class="card-title-custom">Transactions List</h4>
+        <a href="/transactions/add" class="btn-custom-red">Create Transaction</a>
+    </div>
+
+    <div class="table-responsive mt-3">
+        <table class="table table-custom">
+            <thead>
+                <tr>
+                    <th>Tx ID</th>
+                    <th>Member</th>
+                    <th>Books</th>
+                    <th>Book Status</th>
+                    <th>Due Date</th>
+                    <th>Total Fine</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td class="text-muted">{{ t.id }}</td>
+                    <td>{{ t.member_name or '-' }}</td>
+                    <td class="text-muted">
+                        {% if t.books %}
+                        <ul class="mb-0 ps-3">
+                            {% for b in t.books %}
+                            <li>{{ b.title }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if t.books %}
+                        {% for b in t.books %}
+                        {% if b.status.value == 'issued' %}
+                        <span class="badge-status badge-issued d-inline-block mb-1">{{ b.status.value }}</span><br>
+                        {% elif b.status.value == 'returned' %}
+                        <span class="badge-status badge-returned d-inline-block mb-1">{{ b.status.value }}</span><br>
+                        {% else %}
+                        <span class="badge-status d-inline-block mb-1"
+                            style="background: rgba(255,255,255,0.05); color: var(--text-muted);">{{ b.status.value
+                            }}</span><br>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td class="text-muted">
+                        {% if t.due_date %}
+                        {{ t.due_date.strftime('%d %b, %Y') }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td class="{% if t.total_fine > 0 %}text-danger{% else %}text-muted{% endif %}">
+                        ₹ {{ t.total_fine }}
+                    </td>
+                    <td>
+                        <a href="/transactions/edit/{{t.id}}" style="color: var(--text-muted); margin-right: 10px;"
+                            title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="/transactions/delete/{{t.id}}" style="color: var(--accent-red);" title="Delete"><i
+                                class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

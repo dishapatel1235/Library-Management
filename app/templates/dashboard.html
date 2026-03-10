@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="mb-5">
+    <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 5px;">Hello, <span
+            style="color: var(--accent-red);">Disha!</span></h2>
+    <p style="color: var(--text-muted); font-size: 0.95rem;" id="current-date-display"></p>
+</div>
+
+<div class="row mb-4">
+    <div class="col-lg mb-3 mb-lg-0">
+        <div class="card-custom h-100 d-flex justify-content-between align-items-center m-0">
+            <div>
+                <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 5px;" id="stat-total-books">0</h3>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Total Books</span>
+            </div>
+            <div
+                style="width: 45px; height: 45px; border-radius: 50%; background: rgba(255, 71, 87, 0.1); color: var(--accent-red); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-book"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg mb-3 mb-lg-0">
+        <div class="card-custom h-100 d-flex justify-content-between align-items-center m-0">
+            <div>
+                <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 5px;" id="stat-borrowed">0</h3>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Issued Books</span>
+            </div>
+            <div
+                style="width: 45px; height: 45px; border-radius: 50%; background: rgba(255, 71, 87, 0.1); color: var(--accent-red); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg mb-3 mb-lg-0">
+        <div class="card-custom h-100 d-flex justify-content-between align-items-center m-0">
+            <div>
+                <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 5px;" id="stat-transactions">0</h3>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Total Transactions</span>
+            </div>
+            <div
+                style="width: 45px; height: 45px; border-radius: 50%; background: rgba(255, 71, 87, 0.1); color: var(--accent-red); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg mb-3 mb-lg-0">
+        <div class="card-custom h-100 d-flex justify-content-between align-items-center m-0">
+            <div>
+                <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 5px;" id="stat-members">0</h3>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Total Members</span>
+            </div>
+            <div
+                style="width: 45px; height: 45px; border-radius: 50%; background: rgba(255, 71, 87, 0.1); color: var(--accent-red); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg">
+        <div class="card-custom h-100 d-flex justify-content-between align-items-center m-0">
+            <div>
+                <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 5px;" id="stat-total-fine">0</h3>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Total Fine (₹)</span>
+            </div>
+            <div
+                style="width: 45px; height: 45px; border-radius: 50%; background: rgba(255, 71, 87, 0.1); color: var(--accent-red); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6 mb-4 mb-md-0">
+        <div class="card-custom h-100 pb-0 d-flex flex-column">
+            <div class="card-header-flex">
+                <h4 class="card-title-custom">Members List</h4>
+                <a href="/members/add" class="btn-custom-outline">Add New Member</a>
+            </div>
+            <div class="table-responsive flex-grow-1">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Member Name</th>
+                            <th>Membership</th>
+                            <th>Pending Fine</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-list-body">
+                        <tr>
+                            <td colspan="4" class="text-center py-4">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-end mt-2 mb-3">
+                <a href="/members" class="text-decoration-none"
+                    style="color: var(--accent-red); font-size: 0.85rem; font-weight: 500;">See All</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card-custom h-100 pb-0 d-flex flex-column">
+            <div class="card-header-flex">
+                <h4 class="card-title-custom">Books List</h4>
+                <a href="/books/add" class="btn-custom-outline">Add New Book</a>
+            </div>
+            <div class="table-responsive flex-grow-1">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>Book ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books[:6] %}
+                        <tr>
+                            <td class="text-muted">#B-{{ '%04d' % book.id }}</td>
+                            <td>{{ book.title[:20] }}{% if book.title|length > 20 %}...{% endif %}</td>
+                            <td class="text-muted">{{ book.author[:15] }}{% if book.author|length > 15 %}...{% endif %}
+                            </td>
+                            <td>
+                                {% if book.status.value == 'available' %}
+                                <span style="color: #a0a0a8;">Available</span>
+                                {% else %}
+                                <span style="color: var(--accent-red);">{{ book.status.value }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="/books/edit/{{book.id}}"
+                                    style="color: var(--text-muted); text-decoration: none;"><i
+                                        class="fa-solid fa-ellipsis"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-end mt-2 mb-3">
+                <a href="/books" class="text-decoration-none"
+                    style="color: var(--accent-red); font-size: 0.85rem; font-weight: 500;">See All</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card-custom h-100 flex-column d-flex">
+            <div class="card-header-flex">
+                <h4 class="card-title-custom">Books Issued</h4>
+                <a href="/transactions/add" class="btn-custom-outline">Issue Book</a>
+            </div>
+            <div class="table-responsive flex-grow-1">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>Tx ID</th>
+                            <th>Member ID</th>
+                            <th>Member Name</th>
+                            <th>Due Date</th>
+                            <th>Fine</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-list-body">
+                        <tr>
+                            <td colspan="5" class="text-center py-4">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    const dateOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+    const timeOptions = { weekday: 'long', hour: '2-digit', minute: '2-digit' };
+    const now = new Date();
+    document.getElementById('current-date-display').innerText =
+        `${now.toLocaleDateString('en-US', dateOptions)} | ${now.toLocaleDateString('en-US', timeOptions)}`;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        try {
+            // Load stats dashboard
+            const statsRes = await fetch('/api/dashboard/stats');
+            const stats = await statsRes.json();
+
+            document.getElementById('stat-total-books').innerText = stats.total_books;
+            document.getElementById('stat-borrowed').innerText = stats.borrowed_books;
+            document.getElementById('stat-transactions').innerText = stats.total_transactions;
+            document.getElementById('stat-members').innerText = stats.total_members;
+            document.getElementById('stat-total-fine').innerText = '₹' + stats.total_fine;
+
+
+            // Users list mapping
+            const membersRes = await fetch('/list_members');
+            const membersData = await membersRes.json();
+            const usersTbody = document.getElementById('users-list-body');
+            usersTbody.innerHTML = '';
+
+            if (membersData.length > 0) {
+                membersData.slice(0, 5).forEach(m => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="text-muted">#M-${String(m.id).padStart(4, '0')}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(m.full_name)}&background=2b2b36&color=fff&size=30" class="rounded-circle" width="30">
+                                ${m.full_name}
+                            </div>
+                        </td>
+                        <td class="text-muted">${m.membership_type}</td>
+                        <td class="text-white">₹ ${m.total_unpaid_fines}</td>
+                        <td><a href="/members/edit/${m.id}" style="color: var(--text-muted);"><i class="fa-solid fa-ellipsis"></i></a></td>
+                    `;
+                    usersTbody.appendChild(tr);
+                });
+            } else {
+                usersTbody.innerHTML = '<tr><td colspan="4" class="text-center">No members found</td></tr>';
+            }
+
+            // Transactions list mapping
+            const txRes = await fetch('/list_transactions');
+            const txData = await txRes.json();
+            const txTbody = document.getElementById('transactions-list-body');
+            txTbody.innerHTML = '';
+
+            if (txData.length > 0) {
+                txData.slice(0, 5).forEach(t => {
+                    const dueDateStr = t.due_date ? new Date(t.due_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : "-";
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="text-muted">#T-${String(t.id).padStart(4, '0')}</td>
+                        <td class="text-muted">#M-${String(t.member_id).padStart(4, '0')}</td>
+                        <td>${t.member_name || 'Walk-in'}</td>
+                        <td class="text-muted">${dueDateStr}</td>
+                        <td class="text-white">₹ ${t.total_fine || 0}</td>
+                        <td><a href="/transactions/edit/${t.id}" style="color: var(--accent-red); text-decoration: none; font-size: 0.85rem;">View Details</a></td>
+                    `;
+                    txTbody.appendChild(tr);
+                });
+            } else {
+                txTbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No recent transactions</td></tr>';
+            }
+
+        } catch (error) {
+            console.error("Error fetching dashboard data:", error);
+        }
+    });
+</script>
+{% endblock %}

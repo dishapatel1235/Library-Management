@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block page_title %}Edit Transaction{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-8">
+        <div class="card-custom">
+            <h4 class="card-title-custom mb-4">Edit Transaction #T-{{ '%04d' % transaction.id }}</h4>
+
+            <form method="post">
+                <div class="mb-4">
+                    <label class="form-label">Member</label>
+                    <input type="text" class="form-control"
+                        value="{{ transaction.member.full_name }} (ID: #M-{{ '%04d' % transaction.member.id }})"
+                        readonly style="background-color: var(--bg-dark); opacity: 0.8; border-color: transparent;">
+                    <input type="hidden" name="member_id" value="{{ transaction.member.id }}">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label" for="due_date">Due Date</label>
+                    <input type="datetime-local" class="form-control" id="due_date" name="due_date"
+                        value="{% if transaction.due_date %}{{ transaction.due_date.strftime('%Y-%m-%dT%H:%M') }}{% endif %}"
+                        style="background-color: var(--bg-dark); color: white; border: 1px solid var(--border-color);">
+                </div>
+
+                <h5 class="mb-3 text-white" style="font-size: 1rem;">Managed Books</h5>
+
+                <div class="table-responsive mb-4">
+                    <table class="table table-custom">
+                        <thead>
+                            <tr>
+                                <th>Book Title</th>
+                                <th width="200">Action/Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in transaction.books %}
+                            <tr>
+                                <td>
+                                    {{ b.title }}
+                                    <input type="hidden" name="book_ids" value="{{ b.id }}">
+                                </td>
+                                <td>
+                                    <select name="transaction_types" class="form-select form-select-sm">
+                                        <option value="ISSUE" {% if b.status.value=="issued" and
+                                            transaction.transaction_type=="ISSUE" %}selected{% endif %}>ISSUE</option>
+                                        <option value="RENEW" {% if b.status.value=="issued" and
+                                            transaction.transaction_type=="RENEW" %}selected{% endif %}>RENEW</option>
+                                        <option value="RETURN" {% if b.status.value=="returned" %}selected{% endif %}>
+                                            RETURN</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn-custom-red px-4">
+                        Update Transaction
+                    </button>
+                    <a href="/transactions" class="btn-custom-outline px-4">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

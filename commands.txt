@@ -1,0 +1,15 @@
+1.create virtual environment : python -m venv .venv
+2.activate :  .venv\Scripts\Activate | for deactivation of virtual env -> deactivate
+3.upgrade pip : python -m pip install --upgrade pip
+4.install all dependencies : pip install -r requirements.txt
+
+
+5. migrations :
+    initialise alembic : alembic init alembic    
+    alembic revision --autogenerate -m "initial migration with transaction_type"
+    alembic upgrade head
+
+6. run the app : uvicorn main:app --reload
+
+Base URL : http://localhost:8000
+Swagger UI : http://localhost:8000/docs

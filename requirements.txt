@@ -1,0 +1,10 @@
+fastapi[standard]
+docker
+pydentic
+sqlalchemy
+psycopg2-binary
+asyncpg
+uvicorn
+jinja2
+python-dotenv
+alembic
